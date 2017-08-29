@@ -20,26 +20,30 @@ function pipe(...fns) {
 
 const range = [];
 for(var i=1;i<=100;i++){ range.push(i); }
-
-let output = "";
-
 let actions = [{ factor: 3 , label: 'Fizz' }, { factor: 5 , label: 'Buzz' }];
-let actionFunctions = [];
+	
+function fizzBuzz(range, actions) {
 
-actions.forEach(function(action) {
-	actionFunctions.push(actionFactory(action));
-});
+	let output = "";
 
-let composedFunctions = pipe(...actionFunctions) ;
+	let actionFunctions = actions.map(function(action) {
+		return actionFactory(action);
+	});
 
-range.map( i => {
-	let message = "";
-	message = composedFunctions({ i, label : "" }).label;
+	let composedFunctions = pipe(...actionFunctions) ;
 
-	message = message == "" ? i : message;
-	output += "<p>"+message+"</p>"; 
-});
+	range.map( i => {
+		let message = "";
 
+		message = composedFunctions({ i, label : "" }).label;
+
+		message = message == "" ? i : message;
+		output += "<p>"+message+"</p>"; 
+	});
+
+	return output;
+}
+	
 var div = document.getElementById('output');
 
-div.innerHTML += output;
+div.innerHTML += fizzBuzz(range, actions);
