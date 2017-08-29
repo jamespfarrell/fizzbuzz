@@ -1,9 +1,9 @@
 function actionFactory(action) {
-	return function af({i,messageSoFar}) {
-		messageSoFar = (i%action.factor==0) ? messageSoFar + action.label : messageSoFar;
+	return function af({i,label}) {
+		label = (i%action.factor==0) ? label + action.label : label;
 		return {
 			i,
-			messageSoFar
+			label
 		};
 	}
 }
@@ -32,10 +32,9 @@ actions.forEach(function(action) {
 
 let composedFunctions = pipe(...actionFunctions) ;
 
-range.map(function(i){
+range.map( i => {
 	let message = "";
-	message = composedFunctions({ i, messageSoFar : "" }).messageSoFar;
-	
+	message = composedFunctions({ i, label : "" }).label;
 
 	message = message == "" ? i : message;
 	output += "<p>"+message+"</p>"; 
